@@ -27,7 +27,7 @@ def main():
     # Crear la ventana principal
     root = tk.Tk()
     root.title("CocoYunobi")
-    root.geometry("500x400")
+    root.geometry("600x400")
 
     mostrar_pantalla_principal(root)
 

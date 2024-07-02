@@ -21,7 +21,7 @@ def mostrar_pantalla_cocomo_81(root):
     boton_informacion.pack(pady=10)
     
     # Cargar la imagen del icono de retroceder
-    back_icon = Image.open("path/to/your/back_icon.png")  # Cambia la ruta a tu icono de retroceso
+    back_icon = Image.open("img/back.png")  # Cambia la ruta a tu icono de retroceso
     back_icon = back_icon.resize((30, 30), Image.ANTIALIAS)
     back_icon = ImageTk.PhotoImage(back_icon)
     
