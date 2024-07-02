@@ -26,7 +26,7 @@ def mostrar_pantalla_principal(root):
 def main():
     # Crear la ventana principal
     root = tk.Tk()
-    root.title("CocoYunobi")
+    root.title("CocoYunobi maricon")
     root.geometry("600x400")
 
     mostrar_pantalla_principal(root)
