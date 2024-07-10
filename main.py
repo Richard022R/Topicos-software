@@ -7,7 +7,7 @@ def mostrar_pantalla_principal(root):
     # Limpiar la ventana principal
     for widget in root.winfo_children():
         widget.destroy()
-
+    
     # Crear un frame para centrar el contenido
     frame = ttk.Frame(root, padding="20")
     frame.pack(expand=True, fill='both')
