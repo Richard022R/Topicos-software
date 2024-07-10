@@ -1,8 +1,9 @@
 import tkinter as tk
 from tkinter import ttk
 from PIL import Image, ImageTk
+from etapas import mostrar_pantalla_etapas
 
-def mostrar_pantalla_estimacion(root):
+def mostrar_pantalla_estimacion(root, total_costo_promedio=0.0):
     # Limpiar la ventana principal
     for widget in root.winfo_children():
         widget.destroy()
@@ -19,7 +20,7 @@ def mostrar_pantalla_estimacion(root):
     promedio_label = ttk.Label(frame, text="Costo hombre-mes promedio", font=("Helvetica", 12))
     promedio_label.grid(row=1, column=0, sticky='e', pady=5)
 
-    etapas_button = ttk.Button(frame, text="Etapas")
+    etapas_button = ttk.Button(frame, text="Etapas", command=lambda: mostrar_pantalla_etapas(root))
     etapas_button.grid(row=1, column=1, pady=5, padx=(5, 20))
 
     # Valor CPM
@@ -27,6 +28,7 @@ def mostrar_pantalla_estimacion(root):
     cpm_label.grid(row=1, column=2, sticky='e', pady=5)
     cpm_entry = ttk.Entry(frame, width=20)
     cpm_entry.grid(row=1, column=3, pady=5)
+    cpm_entry.insert(0, f"{total_costo_promedio:.2f}")
 
     # Ingrese líneas de código (KLOC)
     kloc_label = ttk.Label(frame, text="Ingrese líneas de código (KLOC)", font=("Helvetica", 12))
@@ -48,17 +50,13 @@ def mostrar_pantalla_estimacion(root):
     # Factores de Cambio Botones
     factores_frame = ttk.Frame(frame)
     factores_frame.grid(row=5, column=0, columnspan=4, pady=5)
-    from producto_factores_cocomo_i import mostrar_pantalla_factores_producto
-    producto_button = ttk.Button(factores_frame, text="Producto", command=lambda: mostrar_pantalla_factores_producto(root), state="disabled")
+    producto_button = ttk.Button(factores_frame, text="Producto", state="disabled")
     producto_button.grid(row=0, column=0, padx=5)
-    from plataforma_factores_cocomo_i import mostrar_pantalla_factores_plataforma
-    plataforma_button = ttk.Button(factores_frame, text="Plataforma", command=lambda: mostrar_pantalla_factores_plataforma(root), state="disabled")
+    plataforma_button = ttk.Button(factores_frame, text="Plataforma", state="disabled")
     plataforma_button.grid(row=0, column=1, padx=5)
-    from personal_factores_cocomo_i import mostrar_pantalla_factores_personal
-    personal_button = ttk.Button(factores_frame, text="Personal", command=lambda: mostrar_pantalla_factores_personal(root), state="disabled")
+    personal_button = ttk.Button(factores_frame, text="Personal", state="disabled")
     personal_button.grid(row=0, column=2, padx=5)
-    from proyecto_factores_cocomo_i import mostrar_pantalla_factores_proyecto
-    proyecto_button = ttk.Button(factores_frame, text="Proyecto", command=lambda: mostrar_pantalla_factores_proyecto(root), state="disabled")
+    proyecto_button = ttk.Button(factores_frame, text="Proyecto", state="disabled")
     proyecto_button.grid(row=0, column=3, padx=5)
 
     botones_factores = [producto_button, plataforma_button, personal_button, proyecto_button]
@@ -119,5 +117,5 @@ def main():
     # Ejecutar la aplicación
     root.mainloop()
 
-if __name__ == "__main__":  
+if _name_ == "_main_":  
     main()
