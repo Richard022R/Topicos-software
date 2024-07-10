@@ -1,8 +1,9 @@
 import tkinter as tk
 from tkinter import ttk
 from PIL import Image, ImageTk
+from etapas import mostrar_pantalla_etapas
 
-def mostrar_pantalla_estimacion(root):
+def mostrar_pantalla_estimacion(root, total_costo_promedio=0.0):
     # Limpiar la ventana principal
     for widget in root.winfo_children():
         widget.destroy()
@@ -19,7 +20,7 @@ def mostrar_pantalla_estimacion(root):
     promedio_label = ttk.Label(frame, text="Costo hombre-mes promedio", font=("Helvetica", 12))
     promedio_label.grid(row=1, column=0, sticky='e', pady=5)
 
-    etapas_button = ttk.Button(frame, text="Etapas")
+    etapas_button = ttk.Button(frame, text="Etapas", command=lambda: mostrar_pantalla_etapas(root))
     etapas_button.grid(row=1, column=1, pady=5, padx=(5, 20))
 
     # Valor CPM
@@ -27,6 +28,7 @@ def mostrar_pantalla_estimacion(root):
     cpm_label.grid(row=1, column=2, sticky='e', pady=5)
     cpm_entry = ttk.Entry(frame, width=20)
     cpm_entry.grid(row=1, column=3, pady=5)
+    cpm_entry.insert(0, f"{total_costo_promedio:.2f}")
 
     # Ingrese líneas de código (KLOC)
     kloc_label = ttk.Label(frame, text="Ingrese líneas de código (KLOC)", font=("Helvetica", 12))
