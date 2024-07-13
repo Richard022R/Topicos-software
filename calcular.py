@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 from PIL import Image, ImageTk
-
+from cocomo_i import mostrar_pantalla_cocomo_81
 
 class FactorCostos(tk.Frame):
     def __init__(self, parent):
@@ -54,6 +54,7 @@ class FactorCostos(tk.Frame):
         }
         
         self.selecciones = {factor: tk.StringVar(value="Nominal") for factor in self.factores}
+        self.resultados = {}
         
         self.setup_ui()
         
@@ -74,7 +75,6 @@ class FactorCostos(tk.Frame):
                 radio_button.grid(row=i, column=j)
         
         # Botones de Cancelar y Guardar
-        from estimacion_i import mostrar_pantalla_estimacion
         tk.Button(self, text="Cancelar", command=self.cancelar).grid(row=len(self.factores) + 3, column=2, pady=10)
         tk.Button(self, text="Guardar", command=self.guardar).grid(row=len(self.factores) + 3, column=4, pady=10)
     
@@ -82,64 +82,21 @@ class FactorCostos(tk.Frame):
         # Acción al cancelar (limpiar las selecciones o cerrar la ventana)
         for factor in self.selecciones:
             self.selecciones[factor].set("Nominal")
-
         messagebox.showinfo("Cancelar", "Selecciones canceladas.")
-        from estimacion_i import mostrar_pantalla_estimacion
-        mostrar_pantalla_estimacion(self.parent)
     
     def guardar(self):
         # Acción al guardar (obtener las selecciones y mostrarlas)
-        resultados = {}
+        self.resultados = {}
         producto = 1  # Inicializa el producto
         for factor in self.selecciones:
             nivel = self.selecciones[factor].get()
             valor = self.valores_niveles.get(factor, {}).get(nivel, 1)
-            resultados[factor] = valor
+            self.resultados[factor] = valor
             producto *= valor
-        messagebox.showinfo("Valores Seleccionados", f"Valores: {producto}")
-        print(resultados)
+        
+        # Mostrar cuadro de mensaje con el producto
+        messagebox.showinfo("Valores Seleccionados", f"Producto de valores seleccionados: {producto}")
+        
+        # Llamar a función externa con el producto
         from estimacion_i import mostrar_pantalla_estimacion
-        mostrar_pantalla_estimacion(self.parent, resultados)  # Pasa los resultados a la función
-
-def mostrar_pantalla_factores_personal(root):
-    # Limpiar la ventana principal
-    for widget in root.winfo_children():
-        widget.destroy()
-    
-    pantalla_factores = FactorCostos(root)
-    pantalla_factores.grid(row=0, column=0, padx=10, pady=10)
-
-def mostrar_pantalla_personal(root):
-    mostrar_pantalla_factores_personal(root)
-
-def mostrar_pantalla_principal(root):       
-    # Aquí se puede definir la función para mostrar la pantalla principal
-    pass
-
-def main():
-    # Crear la ventana principal
-    root = tk.Tk()
-    root.title("Cocomo")
-    root.geometry("800x540")
-    
-    # Configurar estilos
-    style = ttk.Style()
-    style.theme_use("clam")  # Puedes probar otros temas como 'default', 'alt', 'clam', 'classic'
-    
-    # Colores y estilo para los botones
-    style.configure("TButton",
-                    font=("Helvetica", 16),
-                    padding=10,
-                    borderwidth=2,
-                    relief="raised",
-                    background="#4CAF50",  # Color del fondo
-                    foreground="white")    # Color del texto
-    style.map("TButton",
-              background=[('active', '#45a049')])  # Color al hacer hover
-
-    # Colores para la ventana principal
-    root.configure(bg="#F0F0F0")
-
-    mostrar_pantalla_principal(root)
-
-    # Hacer que la ventana
+        mostrar_pantalla_estimacion(producto)

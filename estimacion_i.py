@@ -48,15 +48,20 @@ def mostrar_pantalla_estimacion(root, total_costo_promedio=0.0):
     factores_check.grid(row=4, column=0, columnspan=2, pady=10)
 
     # Factores de Cambio Botones
+# Factores de Cambio Botones
     factores_frame = ttk.Frame(frame)
     factores_frame.grid(row=5, column=0, columnspan=4, pady=5)
-    producto_button = ttk.Button(factores_frame, text="Producto", state="disabled")
+    from producto_factores_cocomo_i import mostrar_pantalla_factores_producto
+    producto_button = ttk.Button(factores_frame, text="Producto", command=lambda: mostrar_pantalla_factores_producto(root), state="disabled")
     producto_button.grid(row=0, column=0, padx=5)
-    plataforma_button = ttk.Button(factores_frame, text="Plataforma", state="disabled")
+    from plataforma_factores_cocomo_i import mostrar_pantalla_factores_plataforma
+    plataforma_button = ttk.Button(factores_frame, text="Plataforma", command=lambda: mostrar_pantalla_factores_plataforma(root), state="disabled")
     plataforma_button.grid(row=0, column=1, padx=5)
-    personal_button = ttk.Button(factores_frame, text="Personal", state="disabled")
+    from personal_factores_cocomo_i import mostrar_pantalla_factores_personal
+    personal_button = ttk.Button(factores_frame, text="Personal", command=lambda: mostrar_pantalla_factores_personal(root), state="disabled")
     personal_button.grid(row=0, column=2, padx=5)
-    proyecto_button = ttk.Button(factores_frame, text="Proyecto", state="disabled")
+    from proyecto_factores_cocomo_i import mostrar_pantalla_factores_proyecto
+    proyecto_button = ttk.Button(factores_frame, text="Proyecto", command=lambda: mostrar_pantalla_factores_proyecto(root), state="disabled")
     proyecto_button.grid(row=0, column=3, padx=5)
 
     botones_factores = [producto_button, plataforma_button, personal_button, proyecto_button]
@@ -117,5 +122,5 @@ def main():
     # Ejecutar la aplicación
     root.mainloop()
 
-if _name_ == "_main_":  
+if __name__ == "_main_":  
     main()

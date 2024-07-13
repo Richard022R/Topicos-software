@@ -70,16 +70,30 @@ class FactorCostos(tk.Frame):
     def guardar(self):
         # Acción al guardar (obtener las selecciones y mostrarlas)
         resultados = {}
-        producto = 1
+        producto = 1  # Inicializa el producto
         for factor in self.selecciones:
             nivel = self.selecciones[factor].get()
             valor = self.valores_niveles.get(factor, {}).get(nivel, 1)
             resultados[factor] = valor
             producto *= valor
-        messagebox.showinfo("Valores Seleccionados", f"Valores: {resultados}")
+        messagebox.showinfo("Valores Seleccionados", f"Valores: {producto}")
         print(resultados)
         from estimacion_i import mostrar_pantalla_estimacion
-        mostrar_pantalla_estimacion(producto)
+        mostrar_pantalla_estimacion(self.parent, resultados)  # Pasa los resultados a la función
+
+def mostrar_pantalla_estimacion(root, resultados):
+    # Limpiar la ventana principal
+    for widget in root.winfo_children():
+        widget.destroy()
+    
+    # Aquí puedes usar los valores de 'resultados' para mostrarlos o procesarlos en la interfaz de estimación
+    tk.Label(root, text="Interfaz de Estimación", font=("Arial", 16)).pack(pady=20)
+    
+    # Mostrar los valores obtenidos
+    for factor, valor in resultados.items():
+        tk.Label(root, text=f"{factor}: {valor}", font=("Arial", 12)).pack(pady=5)
+    
+    # Aquí puedes agregar más widgets y lógica para la pantalla de estimación
 
 def mostrar_pantalla_factores_producto(root):
     # Limpiar la ventana principal
@@ -122,4 +136,8 @@ def main():
 
     mostrar_pantalla_principal(root)
 
-    # Hacer que la ventana
+    # Hacer que la ventana principal sea resizable
+    root.resizable(True, True)
+
+    # Iniciar el bucle principal
+    root.mainloop()
