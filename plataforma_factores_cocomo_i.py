@@ -77,17 +77,14 @@ class FactorCostos(tk.Frame):
     
     def guardar(self):
         # Acción al guardar (obtener las selecciones y mostrarlas)
-        resultados = {}
-        producto = 1  # Inicializa el producto
+        resultado = 1  # Inicializa el resultado
         for factor in self.selecciones:
             nivel = self.selecciones[factor].get()
             valor = self.valores_niveles.get(factor, {}).get(nivel, 1)
-            resultados[factor] = valor
-            producto *= valor
-        messagebox.showinfo("Valores Seleccionados", f"Valores: {producto}")
-        print(resultados)
+            resultado *= valor
+        messagebox.showinfo("Valores Seleccionados", f"Valores: {resultado}")
         from estimacion_i import mostrar_pantalla_estimacion
-        mostrar_pantalla_estimacion(self.parent, resultados)  # Pasa los resultados a la función
+        mostrar_pantalla_estimacion(self.parent, resultado)  # Pasa los resultados a la función
 
 def mostrar_pantalla_estimacion(root, resultados):
     # Limpiar la ventana principal

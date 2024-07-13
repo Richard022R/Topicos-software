@@ -3,7 +3,9 @@ from tkinter import ttk
 from PIL import Image, ImageTk
 from etapas import mostrar_pantalla_etapas
 
-def mostrar_pantalla_estimacion(root, total_costo_promedio=0.0):
+def mostrar_pantalla_estimacion(root, resultado=0, total_costo_promedio=0.0):
+
+
     # Limpiar la ventana principal
     for widget in root.winfo_children():
         widget.destroy()
@@ -47,13 +49,14 @@ def mostrar_pantalla_estimacion(root, total_costo_promedio=0.0):
     factores_check = ttk.Checkbutton(frame, text="Factores de Cambio", variable=factores_var, command=lambda: activar_botones(factores_var))
     factores_check.grid(row=4, column=0, columnspan=2, pady=10)
 
+    resultados = []
     # Factores de Cambio Botones
-# Factores de Cambio Botones
     factores_frame = ttk.Frame(frame)
     factores_frame.grid(row=5, column=0, columnspan=4, pady=5)
     from producto_factores_cocomo_i import mostrar_pantalla_factores_producto
     producto_button = ttk.Button(factores_frame, text="Producto", command=lambda: mostrar_pantalla_factores_producto(root), state="disabled")
     producto_button.grid(row=0, column=0, padx=5)
+    resultados.append(resultado)
     from plataforma_factores_cocomo_i import mostrar_pantalla_factores_plataforma
     plataforma_button = ttk.Button(factores_frame, text="Plataforma", command=lambda: mostrar_pantalla_factores_plataforma(root), state="disabled")
     plataforma_button.grid(row=0, column=1, padx=5)
@@ -122,5 +125,5 @@ def main():
     # Ejecutar la aplicación
     root.mainloop()
 
-if __name__ == "_main_":  
+if __name__ == "__main__":  
     main()
