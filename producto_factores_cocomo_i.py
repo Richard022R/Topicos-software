@@ -3,6 +3,8 @@ from tkinter import ttk, messagebox
 from PIL import Image, ImageTk
 from cocomo_i import mostrar_pantalla_cocomo_81
 
+productos = 0
+
 class FactorCostos(tk.Frame):
     def __init__(self, parent):
         super().__init__(parent)
@@ -70,12 +72,15 @@ class FactorCostos(tk.Frame):
     def guardar(self):
         # Acción al guardar (obtener las selecciones y mostrarlas)
         resultado = 1  # Inicializa el resultado
+        producto = 1
         for factor in self.selecciones:
             nivel = self.selecciones[factor].get()
             valor = self.valores_niveles.get(factor, {}).get(nivel, 1)
             resultado *= valor
-            
-
+            producto *= valor
+            productos = producto
+        with open('producto_factores.txt', 'w') as file:
+            file.write(str(productos))
         messagebox.showinfo("Valores Seleccionados", f"Valores: {resultado:.2f}")
         from estimacion_i import mostrar_pantalla_estimacion
         mostrar_pantalla_estimacion(self.parent, resultado)  # Pasa los resultados a la función

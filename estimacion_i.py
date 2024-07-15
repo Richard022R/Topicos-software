@@ -5,7 +5,7 @@ from etapas import mostrar_pantalla_etapas
 
 def mostrar_pantalla_estimacion(root, resultado=0, total_costo_promedio=0.0):
 
-
+    global productos
     # Limpiar la ventana principal
     for widget in root.winfo_children():
         widget.destroy()
@@ -68,6 +68,26 @@ def mostrar_pantalla_estimacion(root, resultado=0, total_costo_promedio=0.0):
     proyecto_button.grid(row=0, column=3, padx=5)
 
     botones_factores = [producto_button, plataforma_button, personal_button, proyecto_button]
+
+    with open('personal_factores.txt', 'r') as file:
+        contenido_personal = file.read()
+    valor_personal = float(contenido_personal)
+    print('mostrar personal: ', valor_personal)
+
+    with open('plataforma_factores.txt', 'r') as file:
+        contenido_plataforma = file.read()
+    valor_plataforma = float(contenido_plataforma)
+    print('mostrar plataforma: ', valor_plataforma)
+
+    with open('producto_factores.txt', 'r') as file:
+        contenido_producto = file.read()
+    valor_producto = float(contenido_producto)
+    print('mostrar producto: ', valor_producto)
+
+    with open('proyecto_factores.txt', 'r') as file:
+        contenido_proyecto = file.read()
+    valor_proyecto = float(contenido_proyecto)
+    print('mostrar producto: ', valor_proyecto)
 
     # Función para activar/desactivar botones
     def activar_botones(var):

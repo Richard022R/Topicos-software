@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import ttk, messagebox
 from PIL import Image, ImageTk
 
+productos = 0
 
 class FactorCostos(tk.Frame):
     def __init__(self, parent):
@@ -96,8 +97,10 @@ class FactorCostos(tk.Frame):
             valor = self.valores_niveles.get(factor, {}).get(nivel, 1)
             resultados[factor] = valor
             producto *= valor
+            productos = producto
+        with open('personal_factores.txt', 'w') as file:
+            file.write(str(productos))
         messagebox.showinfo("Valores Seleccionados", f"Valores: {producto}")
-        print(resultados)
         from estimacion_i import mostrar_pantalla_estimacion
         mostrar_pantalla_estimacion(self.parent, resultados)  # Pasa los resultados a la función
 
