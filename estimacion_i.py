@@ -41,17 +41,35 @@ def mostrar_pantalla_estimacion(root, resultado=0,):
     else:
         print('El archivo está vacío o contiene solo espacios en blanco.')
 
+    def validate_kloc(*args):
+        if kloc_entry_var.get().strip():
+            tipo_combobox.config(state="normal")
+            with open('kloc_i.txt', 'w') as file:
+                file.write(kloc_entry.get())
+            print('Se escribio ', kloc_entry)
+        else:
+            tipo_combobox.config(state="disabled")
+
+    # Asumiendo que 'frame' ya está definido en tu aplicación principal
+
     # Ingrese líneas de código (KLOC)
     kloc_label = ttk.Label(frame, text="Ingrese líneas de código (KLOC)", font=("Helvetica", 12))
     kloc_label.grid(row=2, column=0, sticky='e', pady=5)
-    kloc_entry = ttk.Entry(frame, width=20)
+    kloc_entry_var = tk.StringVar()
+    kloc_entry_var.trace_add("write", validate_kloc)
+    kloc_entry = ttk.Entry(frame, width=20, textvariable=kloc_entry_var)
     kloc_entry.grid(row=2, column=1, pady=5)
-    print(kloc_entry.get())
-    #with open('kloc_i.txt', 'w') as file:
-    #    file.write(kloc_entry.get())
-    #print(kloc_entry)
+    with open('kloc_i.txt', 'r') as file:
+        kloc_i = file.read()
+    
+    if kloc_i.strip():  # Verifica si kloc_i no está vacío
+        valor_kloc = float(kloc_i)
+        print('mostrar etapas: ', kloc_i)
+        kloc_entry.insert(0, f"{valor_kloc}")
+    else:
+        print('El archivo está vacío o contiene solo espacios en blanco.')
 
-    # Seleccione el tipo de proyecto
+    # Seleccione el tipo de proyecto, mantener desactivado hasta que se ingresen las líneas de código
     tipo_label = ttk.Label(frame, text="Seleccione el tipo de proyecto", font=("Helvetica", 12))
     tipo_label.grid(row=3, column=0, sticky='e', pady=5)
     tipo_combobox = ttk.Combobox(frame, values=["Orgánico", "Moderado", "Embebido"], width=18)

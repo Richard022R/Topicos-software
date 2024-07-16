@@ -33,6 +33,16 @@ def main():
     root = tk.Tk()
     root.title("Cocomo")
     root.geometry("800x540")
+
+    # limpiar todos los archivos
+    with open('kloc_i.txt', 'w') as file:
+        file.write('')
+    with open('etapas_i.txt', 'w') as file:
+        file.write('')
+    with open('costo_i.txt', 'w') as file:
+        file.write('')
+    with open('esfuerzo_i', 'w') as file:
+        file.write('')
     
     # Configurar estilos
     style = ttk.Style()
