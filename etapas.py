@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import ttk, messagebox
 from PIL import Image, ImageTk
 
-
+promedio = 0
 class CostEstimator(tk.Frame):
     def __init__(self, parent):
         super().__init__(parent)
@@ -78,9 +78,13 @@ class CostEstimator(tk.Frame):
     
     def guardar(self):
         total_costo = sum((int(item[1]) / 100) * int(item[2]) for item in [self.tree.item(item, 'values') for item in self.tree.get_children()])
-        messagebox.showinfo("Costo Promedio", f"Costo Hombre Promedio Mes: {total_costo:.2f}")
+        promedio = total_costo  if self.tree.get_children() else 0
+        with open('etapas_i.txt', 'w') as file:
+            file.write(str(promedio))
+        messagebox.showinfo("Costo Promedio", f"Costo Hombre Promedio Mes: {promedio}")
         from estimacion_i import mostrar_pantalla_estimacion
-        mostrar_pantalla_estimacion(self.parent, total_costo)
+        mostrar_pantalla_estimacion(self.parent)
+        
 
 def mostrar_pantalla_etapas(root):
     # Limpiar la ventana principal

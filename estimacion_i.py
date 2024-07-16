@@ -3,7 +3,8 @@ from tkinter import ttk
 from PIL import Image, ImageTk
 from etapas import mostrar_pantalla_etapas
 
-def mostrar_pantalla_estimacion(root, resultado=0, total_costo_promedio=0.0):
+
+def mostrar_pantalla_estimacion(root, resultado=0,):
 
     global productos
     # Limpiar la ventana principal
@@ -30,18 +31,30 @@ def mostrar_pantalla_estimacion(root, resultado=0, total_costo_promedio=0.0):
     cpm_label.grid(row=1, column=2, sticky='e', pady=5)
     cpm_entry = ttk.Entry(frame, width=20)
     cpm_entry.grid(row=1, column=3, pady=5)
-    cpm_entry.insert(0, f"{total_costo_promedio:.2f}")
+    with open('etapas_i.txt', 'r') as file:
+        etapas_i = file.read()
+    
+    if etapas_i.strip():  # Verifica si etapas_i no está vacío
+        valor_etapas = float(etapas_i)
+        print('mostrar etapas: ', etapas_i)
+        cpm_entry.insert(0, f"{valor_etapas}")
+    else:
+        print('El archivo está vacío o contiene solo espacios en blanco.')
 
     # Ingrese líneas de código (KLOC)
     kloc_label = ttk.Label(frame, text="Ingrese líneas de código (KLOC)", font=("Helvetica", 12))
     kloc_label.grid(row=2, column=0, sticky='e', pady=5)
     kloc_entry = ttk.Entry(frame, width=20)
     kloc_entry.grid(row=2, column=1, pady=5)
+    print(kloc_entry.get())
+    #with open('kloc_i.txt', 'w') as file:
+    #    file.write(kloc_entry.get())
+    #print(kloc_entry)
 
     # Seleccione el tipo de proyecto
     tipo_label = ttk.Label(frame, text="Seleccione el tipo de proyecto", font=("Helvetica", 12))
     tipo_label.grid(row=3, column=0, sticky='e', pady=5)
-    tipo_combobox = ttk.Combobox(frame, values=["Orgánico", "Semi-acoplado", "Embebido"], width=18)
+    tipo_combobox = ttk.Combobox(frame, values=["Orgánico", "Moderado", "Embebido"], width=18)
     tipo_combobox.grid(row=3, column=1, pady=5)
 
     # Factores de Cambio
@@ -95,13 +108,45 @@ def mostrar_pantalla_estimacion(root, resultado=0, total_costo_promedio=0.0):
         for boton in botones_factores:
             boton.config(state=estado)
 
+    # Función para calcular el esfuerzo y tiempo de desarrollo
+    def calcular():
+        try:
+            kloc = float(kloc_entry.get())
+            tipo = tipo_combobox.get()
+            fec = valor_personal * valor_plataforma * valor_producto * valor_proyecto
+
+            if tipo == "Orgánico":
+                esf = 3.2 * (kloc ** 1.05) * fec
+                tdes = 2.5 * (esf ** 0.38)
+                costo = esf * valor_etapas 
+            elif tipo == "Moderado":
+                esf = 3.0 * (kloc ** 1.12) * fec
+                tdes = 2.5 * (esf ** 0.35)
+                costo = esf * valor_etapas 
+            elif tipo == "Embebido":
+                esf = 2.8 * (kloc ** 1.20) * fec
+                tdes = 2.5 * (esf ** 0.32)
+                costo = esf * valor_etapas 
+            else:
+                raise ValueError("Tipo de proyecto no válido")
+
+            resultado_label.config(text=f"Esfuerzo: {esf:.2f} personas-mes\nTiempo de Desarrollo: {tdes:.2f} meses\nCosto de Desarollo: {costo:.2f} soles")
+        except ValueError as e:
+            resultado_label.config(text=f"Error: {str(e)}")
+
+
+
     # Botones Limpiar y Estimar
     botones_frame = ttk.Frame(frame)
     botones_frame.grid(row=6, column=0, columnspan=4, pady=20)
-    limpiar_button = ttk.Button(botones_frame, text="Limpiar", style="TButton")
+    limpiar_button = ttk.Button(botones_frame, text="Limpiar", style="TButton", command=lambda: [kloc_entry.delete(0, 'end'), tipo_combobox.set(''), resultado_label.config(text="")])
     limpiar_button.grid(row=0, column=0, padx=10)
-    estimar_button = ttk.Button(botones_frame, text="Estimar", style="TButton")
+    estimar_button = ttk.Button(botones_frame, text="Estimar", style="TButton", command=calcular)
     estimar_button.grid(row=0, column=1, padx=10)
+
+    # Resultado de la estimación
+    resultado_label = ttk.Label(frame, text="", font=("Helvetica", 12))
+    resultado_label.grid(row=7, column=0, columnspan=4, pady=10)
 
     # Botón de retroceder con imagen
     image = Image.open("back.png")  # Ruta correcta a la imagen
