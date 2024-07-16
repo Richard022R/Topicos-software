@@ -47,6 +47,9 @@ def mostrar_pantalla_estimacion(root, resultado=0,):
             with open('kloc_i.txt', 'w') as file:
                 file.write(kloc_entry.get())
             print('Se escribio ', kloc_entry)
+            with open('tipo_combobox_i.txt', 'w') as file:
+                file.write(tipo_combobox.get())
+            print(tipo_combobox.get())
         else:
             tipo_combobox.config(state="disabled")
 
@@ -64,7 +67,6 @@ def mostrar_pantalla_estimacion(root, resultado=0,):
     
     if kloc_i.strip():  # Verifica si kloc_i no está vacío
         valor_kloc = float(kloc_i)
-        print('mostrar etapas: ', kloc_i)
         kloc_entry.insert(0, f"{valor_kloc}")
     else:
         print('El archivo está vacío o contiene solo espacios en blanco.')
@@ -72,8 +74,14 @@ def mostrar_pantalla_estimacion(root, resultado=0,):
     # Seleccione el tipo de proyecto, mantener desactivado hasta que se ingresen las líneas de código
     tipo_label = ttk.Label(frame, text="Seleccione el tipo de proyecto", font=("Helvetica", 12))
     tipo_label.grid(row=3, column=0, sticky='e', pady=5)
+    tipo_combobox_var = tk.StringVar()
+    tipo_combobox_var.trace_add("write", validate_kloc)
     tipo_combobox = ttk.Combobox(frame, values=["Orgánico", "Moderado", "Embebido"], width=18)
     tipo_combobox.grid(row=3, column=1, pady=5)
+    with open('tipo_combobox_i.txt', 'r') as file:
+        combobox_i = file.read()
+        tipo_combobox.set(combobox_i)
+
 
     # Factores de Cambio
     factores_var = tk.BooleanVar()
