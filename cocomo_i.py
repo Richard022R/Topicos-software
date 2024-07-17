@@ -42,6 +42,19 @@ def mostrar_pantalla_cocomo_81(root):
     boton_retroceder.image = photo  # Para que la imagen no se borre
     boton_retroceder.pack(pady=10)
 
+    with open('kloc_i.txt', 'w') as file:
+        file.write('0.0')
+    with open('etapas_i.txt', 'w') as file:
+        file.write('0.0')
+    with open('producto_factores.txt', 'w') as file:
+        file.write('1.0')
+    with open('personal_factores.txt', 'w') as file:
+        file.write('1.0')
+    with open('proyecto_factores.txt', 'w') as file:
+        file.write('1.0')
+    with open('plataforma_factores.txt', 'w') as file:
+        file.write('1.0')
+
 def mostrar_pantalla_principal(root):       
     from main import mostrar_pantalla_principal
     mostrar_pantalla_principal(root)

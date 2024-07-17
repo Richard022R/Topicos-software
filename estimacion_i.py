@@ -3,8 +3,12 @@ from tkinter import ttk
 from PIL import Image, ImageTk
 from etapas import mostrar_pantalla_etapas
 
-
 def mostrar_pantalla_estimacion(root, resultado=0,):
+
+    class AppState:
+        def __init__(self):
+            self.tipo_proyecto = tk.StringVar()
+    app_state = AppState()
 
     global productos
     # Limpiar la ventana principal
@@ -76,8 +80,12 @@ def mostrar_pantalla_estimacion(root, resultado=0,):
     tipo_label.grid(row=3, column=0, sticky='e', pady=5)
     tipo_combobox_var = tk.StringVar()
     tipo_combobox_var.trace_add("write", validate_kloc)
-    tipo_combobox = ttk.Combobox(frame, values=["Orgánico", "Moderado", "Embebido"], width=18)
+    tipo_combobox = ttk.Combobox(frame, values=["Organico", "Moderado", "Embebido"], width=18, textvariable=app_state.tipo_proyecto)
     tipo_combobox.grid(row=3, column=1, pady=5)
+    tipo_proyecto = app_state.tipo_proyecto.get()
+    print('tipo_3: ',tipo_proyecto)
+    print('tipo_1: ',tipo_combobox.get())
+    print('tipo_2: ', tipo_combobox_var.get())
     with open('tipo_combobox_i.txt', 'r') as file:
         combobox_i = file.read()
         tipo_combobox.set(combobox_i)
@@ -141,7 +149,7 @@ def mostrar_pantalla_estimacion(root, resultado=0,):
             tipo = tipo_combobox.get()
             fec = valor_personal * valor_plataforma * valor_producto * valor_proyecto
 
-            if tipo == "Orgánico":
+            if tipo == "Organico":
                 esf = 3.2 * (kloc ** 1.05) * fec
                 tdes = 2.5 * (esf ** 0.38)
                 costo = esf * valor_etapas 
@@ -167,7 +175,9 @@ def mostrar_pantalla_estimacion(root, resultado=0,):
     botones_frame.grid(row=6, column=0, columnspan=4, pady=20)
     limpiar_button = ttk.Button(botones_frame, text="Limpiar", style="TButton", command=lambda: [kloc_entry.delete(0, 'end'), tipo_combobox.set(''), resultado_label.config(text="")])
     limpiar_button.grid(row=0, column=0, padx=10)
-    estimar_button = ttk.Button(botones_frame, text="Estimar", style="TButton", command=calcular)
+    #estimar_button = ttk.Button(botones_frame, text="Estimar", style="TButton", command=calcular)
+    from resultados_i import mostrar_pantalla_resultados
+    estimar_button = ttk.Button(botones_frame, text="Estimar", style="TButton", command=lambda: mostrar_pantalla_resultados(root))
     estimar_button.grid(row=0, column=1, padx=10)
 
     # Resultado de la estimación
